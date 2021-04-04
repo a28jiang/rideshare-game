@@ -1,31 +1,37 @@
-import React, { useState } from "react";
-import QuestionView from "./components/QuestionView";
-import { Questions } from "./Questions";
-import "./App.css";
+import React from "react";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
-function App() {
-  const [selected, setSelected] = useState([]);
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Home from "./Home";
+import Game from "./Game";
+import Result from "./Result";
 
-  const handleSelect = ({ index, option }) => {
-    console.log(option);
-    const curSelection = selected;
-    curSelection[index] = { type: option.type, val: option.val };
-    setSelected(curSelection);
-    console.log(selected);
-  };
+const mainTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#579FA3",
+    },
+  },
+});
+
+export default function App() {
   return (
-    <div className="App">
-      {Questions.map((q, index) => (
-        <QuestionView
-          key={index}
-          title={q.title}
-          options={q.options}
-          setOption={handleSelect}
-          index={index}
-        />
-      ))}
-    </div>
+    <ThemeProvider theme={mainTheme}>
+      <Router>
+        <div>
+          <Switch>
+            <Route path="/game">
+              <Game />
+            </Route>
+            <Route path="/result">
+              <Result />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
-
-export default App;
